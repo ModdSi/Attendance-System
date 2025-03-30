@@ -2,6 +2,7 @@ const express = require("express");
 const Student = require("../models/student");
 const router = express.Router();
 const AttendanceRecord = require("../models/attendace");
+const ClassRecord = require("../models/classes");
 
 ///////////////
 
@@ -25,10 +26,33 @@ router.get("/add-day", async (req, res) => {
   }
 });
 
+router.get("/class-records", async (req, res) => {
+  try {
+    const classes = await ClassRecord.find(); // Fetch all students from the database
+    res.json(classes); // Send data as JSON response
+  } catch (err) {
+    console.error("Error retrieving classes:", err);
+    res.status(500).json({ error: "Error retrieving classes" });
+  }
+});
+
+router.post("/add-class", async (req, res) => {
+  try {
+    const newClass = new ClassRecord({
+      name: req.body.name,
+    });
+    await newClass.save();
+    res.json({ message: "New class added successfully!", newClass });
+  } catch (error) {
+    console.error("Error adding new class:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 router.post("/add-day", async (req, res) => {
   try {
     const { date } = req.body;
-
+    const { classId } = req.body;
     // const existingRecord = await AttendanceRecord.findOne({ date });
     // if (existingRecord) {
     //   return res
@@ -45,9 +69,11 @@ router.post("/add-day", async (req, res) => {
     // Create new attendance record
     const newRecord = new AttendanceRecord({
       date,
+      classId,
       students: students.map((student) => ({
         studentId: student._id,
         name: student.name, // Store name once
+        attendTime: student.attendTime,
         present: false, // Default: Not marked present
       })),
     });

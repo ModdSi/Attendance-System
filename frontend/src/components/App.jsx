@@ -8,6 +8,7 @@ import StPage from "./StPage";
 import AttPage from "./AttPage";
 import { Routes, Route } from "react-router-dom";
 import Table from "./Tabel";
+import TablePage from "./TablePage";
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
         </Routes>
 
         <Routes>
-          <Route path="/attpage" element={<AttPage />}></Route>
+          <Route path="/attpage" element={<Table />}></Route>
         </Routes>
         {/* <AttPage /> */}
         {/* <StPage /> */}

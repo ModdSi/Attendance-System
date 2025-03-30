@@ -92,7 +92,7 @@ export default function Table() {
       }
     };
     getAttend();
-  }, []);
+  }, [attendanceRecords]);
 
   console.log("jasm" + attendanceRecords);
   //   console.log("jasm" + dataR);
@@ -102,10 +102,13 @@ export default function Table() {
   );
 
   return (
-    <div className="flex   items-center">
-      <div className="flex   items-center flex-row absolute p-4">
+    <div className="flex  ">
+      <div className="flex fixed justify-between mb-12 ">
+        <h1 className="text-4xl font-light">Students Table</h1>
+      </div>
+      <div className="flex   items-center flex-row  p-4 ">
         {attendanceRecords.map((record) => (
-          <table className="border-2  border-gray-600  rounded-xl overflow-hidden text-xl h-full  bg-gray-100 drop-shadow-lg mx-4 w-[500px] table-fixed">
+          <table className="border-2  border-gray-600  rounded-xl overflow-hidden text-xl h-full  bg-gray-100 drop-shadow-lg mx-4 w-[700px] table-fixed">
             <thead className="border-2">
               {/* {attendanceStudents.map(())} */}
               <tr>
@@ -115,6 +118,7 @@ export default function Table() {
                   {record.date}
                   {/* {record.length > 0 ? record.date : "No records"} */}
                 </th>
+                <th className="border-2 border-gray-600">Time</th>
               </tr>
             </thead>
             <tbody>
@@ -124,15 +128,18 @@ export default function Table() {
                   <tr key={rowIndex} className="h-12 ">
                     {" "}
                     {/* Fixed height for all rows */}
-                    <td className="border-2 border-gray-600 px-4 py-2 ">
+                    <td className="border-2 border-gray-600 text-center px-4 py-2 ">
                       {student.name || ""}
                     </td>
-                    <td className="border-2 border-gray-600 px-4 py-2 ">
+                    <td className="border-2 border-gray-600 text-center px-4 py-2 ">
                       {student.hasOwnProperty("present")
                         ? student.present
                           ? "Present ✅"
                           : "Absent ❌"
                         : ""}
+                    </td>
+                    <td className="border-2 text-center border-gray-600 px-4 py-2 ">
+                      {student.attendTime || ""}
                     </td>
                   </tr>
                 );

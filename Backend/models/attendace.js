@@ -6,7 +6,7 @@ const attendanceSchema = new mongoose.Schema({
     {
       studentId: { type: mongoose.Schema.Types.ObjectId, ref: "Student" },
       name: { type: mongoose.Schema.Types.String, ref: "Student" },
-
+      attendTime: { type: String, default: "-" },
       present: { type: Boolean, default: false }, // Default: absent
     },
   ],
