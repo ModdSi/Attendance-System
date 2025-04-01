@@ -2,9 +2,9 @@ import AttendanceTable from "./AttendanceTable";
 import table from "../assets/table.png";
 import AddClass from "./popup2";
 import { useEffect, useState } from "react";
-function AttPage() {
+import { Link, useNavigate } from "react-router-dom";
+function AttPage({ classes, setClasses, setSelectedId, selectedId }) {
   const [className, setClassName] = useState("");
-  const [classes, setClasses] = useState([]);
 
   useEffect(() => {
     const getClasses = async () => {
@@ -25,9 +25,9 @@ function AttPage() {
       }
     };
     getClasses();
-  }, [classes]);
+  }, []);
 
-  console.log("this", classes);
+  console.log("this", selectedId);
   return (
     <div className="w-full h-screen">
       <div className="flex justify-between mb-12 mt-40">
@@ -39,16 +39,19 @@ function AttPage() {
       </div>
       <div className="flex flex-wrap gap-8  ">
         {classes.map((c) => (
-          <div
-            class="card"
-            className="w-[350px] cursor-pointer opacity-70 hover:opacity-100 h-[250px] bg-gray-300  rounded-2xl flex flex-col items-center justify-center"
-          >
-            <img src={table} className="w-4/5 h-[200px] opacity-40" />
-            <div className="bg-gray-400 w-full flex p-4 rounded-b-2xl  justify-center">
-              {" "}
-              <h2 className="text-xl   ">{c.name}</h2>
+          <Link key={c._id} to="/tables">
+            <div
+              onClick={() => setSelectedId(c._id)}
+              class="card"
+              className="w-[350px] cursor-pointer opacity-70 hover:opacity-100 h-[250px] bg-gray-300  rounded-2xl flex flex-col items-center justify-center"
+            >
+              <img src={table} className="w-4/5 h-[200px] opacity-40" />
+              <div className="bg-gray-400 w-full flex p-4 rounded-b-2xl  justify-center">
+                {" "}
+                <h2 className="text-xl   ">{c.name}</h2>
+              </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

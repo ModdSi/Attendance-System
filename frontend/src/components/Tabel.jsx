@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-export default function Table() {
+export default function Table({ selectedId, setSelectedId }) {
   const [attendanceStudents, setAttendanceStudents] = useState([]);
 
   const [attendanceRecords, setAttendanceRecords] = useState([]);
-  const [dataR, setDataR] = useState([]);
   // Fetch attendance records
   //   useEffect(() => {
   //     const fetchAttendance = async () => {
@@ -21,7 +20,6 @@ export default function Table() {
 
   //     fetchAttendance();
   //   }, []);
-
   useEffect(() => {
     const fetchStudents = async () => {
       try {
@@ -42,11 +40,12 @@ export default function Table() {
   // Function to add a new day
   const addNewDay = async () => {
     try {
+      const Id = selectedId;
       const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD format
       const response = await fetch("http://localhost:3000/api/add-day", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ date: today }),
+        body: JSON.stringify({ date: today, classId: Id }),
       });
 
       if (!response.ok) {
@@ -102,60 +101,66 @@ export default function Table() {
   );
 
   return (
-    <div className="flex  ">
-      <div className="flex fixed justify-between mb-12 ">
-        <h1 className="text-4xl font-light">Students Table</h1>
-      </div>
-      <div className="flex   items-center flex-row  p-4 ">
-        {attendanceRecords.map((record) => (
-          <table className="border-2  border-gray-600  rounded-xl overflow-hidden text-xl h-full  bg-gray-100 drop-shadow-lg mx-4 w-[700px] table-fixed">
-            <thead className="border-2">
-              {/* {attendanceStudents.map(())} */}
-              <tr>
-                <th className="border-2 border-gray-600">Name</th>
-                <th className="border-2 border-gray-600  px-2">
-                  {" "}
-                  {record.date}
-                  {/* {record.length > 0 ? record.date : "No records"} */}
-                </th>
-                <th className="border-2 border-gray-600">Time</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Array.from({ length: maxRows }).map((_, rowIndex) => {
-                const student = record.students[rowIndex] || {}; // Handle missing rows
-                return (
-                  <tr key={rowIndex} className="h-12 ">
-                    {" "}
-                    {/* Fixed height for all rows */}
-                    <td className="border-2 border-gray-600 text-center px-4 py-2 ">
-                      {student.name || ""}
-                    </td>
-                    <td className="border-2 border-gray-600 text-center px-4 py-2 ">
-                      {student.hasOwnProperty("present")
-                        ? student.present
-                          ? "Present ✅"
-                          : "Absent ❌"
-                        : ""}
-                    </td>
-                    <td className="border-2 text-center border-gray-600 px-4 py-2 ">
-                      {student.attendTime || ""}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        ))}
-        <button
-          onClick={addNewDay}
-          className=" w-70 mx-4 rounded-2xl h-[550px] transition-all flex flex-col items-center justify-center text-2xl border-dashed border-2 hover:opacity-50 cursor-pointer opacity-30 bg-gray-300"
-        >
-          <span className=" text-5xl flex justify-center p-12 mb-12 items-center border-2 w-[70px] h-[70px] border-dashed rounded-2xl">
-            +
-          </span>
-          New Table
-        </button>
+    <div>
+      <div className="flex   items-center">
+        <div className="flex   items-center flex-row  p-4">
+          {attendanceRecords.map((record) => {
+            if (record.classId == selectedId) {
+              return (
+                <table
+                  key={record._id}
+                  className="border-2  border-gray-600  rounded-xl overflow-hidden text-xl h-full  bg-gray-100 drop-shadow-lg mx-4 w-[700px] table-fixed"
+                >
+                  <thead className="border-2">
+                    {/* {attendanceStudents.map(())} */}
+                    <tr>
+                      <th className="border-2 border-gray-600">Name</th>
+                      <th className="border-2 border-gray-600  px-2">
+                        {" "}
+                        {record.date}
+                        {/* {record.length > 0 ? record.date : "No records"} */}
+                      </th>
+                      <th className="border-2 border-gray-600">Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Array.from({ length: maxRows }).map((_, rowIndex) => {
+                      const student = record.students[rowIndex] || {}; // Handle missing rows
+                      return (
+                        <tr key={rowIndex} className="h-12 ">
+                          {/* {" "} */}
+                          {/* Fixed height for all rows */}
+                          <td className="border-2 border-gray-600 text-center px-4 py-2 ">
+                            {student.name || ""}
+                          </td>
+                          <td className="border-2 border-gray-600 text-center px-4 py-2 ">
+                            {student.hasOwnProperty("present")
+                              ? student.present
+                                ? "Present ✅"
+                                : "Absent ❌"
+                              : ""}
+                          </td>
+                          <td className="border-2 text-center border-gray-600 px-4 py-2 ">
+                            {student.attendTime || ""}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              );
+            }
+          })}
+          <button
+            onClick={addNewDay}
+            className=" w-70 mx-4 rounded-2xl h-[550px] transition-all flex flex-col items-center justify-center text-2xl border-dashed border-2 hover:opacity-50 cursor-pointer opacity-30 bg-gray-300"
+          >
+            <span className=" text-5xl flex justify-center p-12 mb-12 items-center border-2 w-[70px] h-[70px] border-dashed rounded-2xl">
+              +
+            </span>
+            New Table
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -29,11 +29,12 @@ function StPage() {
 
       <div className="flex flex-wrap gap-4  ">
         {students.map((student) => (
-          <div className="rounded-[50px] flex flex-col justify-center items-center h-[250px]  w-[200px] bg-gray-300 opacity-80">
+          <div
+            key={student._id}
+            className="rounded-[50px] flex flex-col justify-center items-center h-[250px]  w-[200px] bg-gray-300 opacity-80"
+          >
             <img src={pfp} className=" h-2/4 " />{" "}
-            <h2 className="text-xl mt-4" key={student._id}>
-              {student.name}
-            </h2>
+            <h2 className="text-xl mt-4">{student.name}</h2>
           </div>
         ))}
       </div>
