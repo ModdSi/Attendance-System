@@ -1,10 +1,10 @@
-# 📚 Face Recognition Attendance System – Web App
+# Face Recognition Attendance System – Web App
 
 This is the web-based part of a face recognition attendance system that I worked on. It’s a full-stack app that handles user management, attendance logging, and interface display. The actual face recognition logic runs separately (written in Python by my teammate), and this web app communicates with it indirectly via stored data.
 
 ---
 
-## 🚀 What It Does
+## What It Does
 
 - Students can be added and managed in a simple UI
 - Attendance logs are recorded and displayed
@@ -15,7 +15,7 @@ This is the web-based part of a face recognition attendance system that I worked
 
 ---
 
-## 🔧 Tech Stack
+## Tech Stack
 
 - **Frontend**: React.js + Tailwind CSS
 - **Backend**: Node.js + Express.js
